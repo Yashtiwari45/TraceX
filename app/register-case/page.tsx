@@ -15,6 +15,7 @@ import {
   Alert,
   AlertIcon,
   Spinner,
+  useBreakpointValue,  // <-- Added for responsiveness
 } from "@chakra-ui/react";
 import { addCase, isCollectorOrAdmin } from "@/utils/helpers";
 
@@ -32,6 +33,8 @@ export default function RegisterCase() {
   const [hasAccess, setHasAccess] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const toast = useToast();
+
+  const boxWidth = useBreakpointValue({ base: "90%", md: "700px" });  // Adjusts width based on screen size
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -124,7 +127,7 @@ export default function RegisterCase() {
 
   if (isLoading) {
     return (
-      <Box className="min-h-screen flex justify-center items-center">
+      <Box minH="100vh" display="flex" justifyContent="center" alignItems="center">
         <Spinner size="xl" />
       </Box>
     );
@@ -132,7 +135,7 @@ export default function RegisterCase() {
 
   if (!hasAccess) {
     return (
-      <Box className="min-h-screen flex justify-center items-center">
+      <Box minH="100vh" display="flex" justifyContent="center" alignItems="center">
         <Alert status="error">
           <AlertIcon />
           {error || "You do not have permission to view this page."}
@@ -142,23 +145,19 @@ export default function RegisterCase() {
   }
 
   return (
-    <Box className="min-h-screen flex justify-center items-center pt-10 p-6">
-      <Box maxW="700px" w="100%">
-        <Heading as="h1" size="lg" mb={6}>
+    <Box minH="100vh" display="flex" justifyContent="center" alignItems="center" py={{ base: 4, md: 10 }} px={4}>
+      <Box maxW={boxWidth} w="100%" p={{ base: 4, md: 6 }} borderRadius="lg" boxShadow="md" bg="white">
+        <Heading as="h1" size="lg" mb={6} textAlign="center">
           Register Cases
         </Heading>
         <FormControl id="courtId" mb={4} isRequired>
           <FormLabel>Court ID</FormLabel>
-          <Input placeholder="Enter court ID" ref={courtIdRef} className="mb-4 w-full px-4 py-2 shadow-md rounded transition duration-200 ease-in-out hover:shadow-lg" />
+          <Input placeholder="Enter court ID" ref={courtIdRef} />
         </FormControl>
 
         <FormControl id="caseDescription" mb={4} isRequired>
           <FormLabel>Case Description</FormLabel>
-          <Textarea
-            placeholder="Enter case description"
-            ref={caseDescriptionRef}
-            className="mb-4 w-full px-4 py-2 shadow-md rounded transition duration-200 ease-in-out hover:shadow-lg"
-          />
+          <Textarea placeholder="Enter case description" ref={caseDescriptionRef} />
         </FormControl>
 
         <FormControl id="caseType" mb={4} isRequired>
@@ -167,23 +166,22 @@ export default function RegisterCase() {
             <option value="Civil">Civil</option>
             <option value="Criminal">Criminal</option>
             <option value="Family">Family</option>
-            {/* Add more options as needed */}
           </Select>
         </FormControl>
 
         <FormControl id="petitioner" mb={4} isRequired>
           <FormLabel>Petitioner</FormLabel>
-          <Input placeholder="Enter petitioner name" ref={petitionerRef} className="mb-4 w-full px-4 py-2 shadow-md rounded transition duration-200 ease-in-out hover:shadow-lg" />
+          <Input placeholder="Enter petitioner name" ref={petitionerRef} />
         </FormControl>
 
         <FormControl id="respondent" mb={4} isRequired>
           <FormLabel>Respondent</FormLabel>
-          <Input placeholder="Enter respondent name" ref={respondentRef} className="mb-4 w-full px-4 py-2 shadow-md rounded transition duration-200 ease-in-out hover:shadow-lg" />
+          <Input placeholder="Enter respondent name" ref={respondentRef} />
         </FormControl>
 
         <FormControl id="startDateTime" mb={4} isRequired>
           <FormLabel>Start Date</FormLabel>
-          <Input type="date" ref={startDateRef} className="mb-4 w-full px-4 py-2 shadow-md rounded transition duration-200 ease-in-out hover:shadow-lg" />
+          <Input type="date" ref={startDateRef} />
         </FormControl>
 
         <FormControl id="status" mb={6} isRequired>
@@ -192,16 +190,10 @@ export default function RegisterCase() {
             <option value="Open">Open</option>
             <option value="Under Investigation">Under Investigation</option>
             <option value="Closed">Closed</option>
-            {/* Add more options as needed */}
           </Select>
         </FormControl>
 
-        <Button
-          colorScheme="teal"
-          isLoading={isSubmitting}
-          onClick={handleAddCase}
-          width="full"
-        >
+        <Button colorScheme="teal" isLoading={isSubmitting} onClick={handleAddCase} width="full">
           Register Case
         </Button>
       </Box>
